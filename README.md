@@ -1,4 +1,5 @@
-# dongo
+# dongo-fe
+* 동래고등학교 설문 페이지 프론트엔드
 
 ## Project setup
 ```
