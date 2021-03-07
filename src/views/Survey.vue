@@ -58,7 +58,6 @@ export default {
         else alertMsg.push(`${obj.quest} : (없음)`);
       }
       if (!confirm(`설문을 제출하시겠습니까?\n\n- 설문 작성 내용 : \n${alertMsg.join("\n")}\n\n※ 한 번만 제출할 수 있습니다.`)) return;
-      console.log(this.selections, payload);
       let ret = (await axios.post(`${location.origin}/api/survey/submit`, JSON.stringify({
         id: this.id,
         data: payload
@@ -67,7 +66,7 @@ export default {
         this.errorMessage = "오류가 발생했습니다.";
         return;
       }
-      if (ret.result) {
+      if (ret.result !== 0) {
         this.errorMessage = ret.result_data || "오류가 발생했습니다.";
         return;
       }
@@ -81,34 +80,19 @@ export default {
   async created() {
     let find = this.$store.getters.surveyList.filter(({url, name}) => url === this.id);
     if (find.length !== 1) {
-      this.$router.push({
+      await this.$router.push({
         name: 'Home'
       });
       return;
     }
     this.surveyInfo = find.shift();
 
-    this.questions = (await axios.get(`${location.origin}/api/survey/detail?id=${encodeURI(this.id)}`)).data;
-    this.questions = [
-      {
-        quest: "신청할 과목을 선택하세요. (월요일)",
-        ans: [
-          {text: "국어 (마감됨)", disabled: true, value: '국어'},
-          {text: "수학1 (10명 신청 가능)", disabled: false, value: '수학1'},
-        ],
-        multiple: true,
-        id: 0
-      },
-      {
-        quest: "신청할 과목을 선택하세요. (화요일)",
-        ans: [
-          {text: "수학2 (3명 신청 가능)", disabled: false, value: '수학2'},
-          {text: "과학 (2명 신청 가능)", disabled: false, value: '과학'},
-        ],
-        multiple: true,
-        id: 1
-      },
-    ];
+    let data = (await axios.get(`${location.origin}/api/survey/detail?id=${encodeURI(this.id)}`)).data;
+    if (data.result === 0) this.questions = data.result_data;
+    else {
+      alert("설문지 로딩 실패\n새로고침합니다...");
+      location.reload();
+    }
   }
 }
 </script>

@@ -29,33 +29,20 @@ export default new Vuex.Store({
 			}
 			let res = (await axios.post(`${location.origin}/api/auth/login`, JSON.stringify(payload))).data;
 
-			res = {
-				result: 1,
-				result_data: "존재하지 않는 학번 또는 이름입니다."
-			};
-			if (1)
-				res = {
-					result: 0,
-					result_data: {
-						jwt: '1',
-						num: '30608',
-						name: '박찬솔'
-					},
-				};
-
-
 			Vue.$cookies.remove('auth');
 			if (typeof res !== "object" || res.result !== 0) {
-				auth.errorMessage = res.result_data ? res.result_data : '';
+				auth.errorMessage = res && res.result_data ? res.result_data : '오류가 발생했습니다.';
 			} else {
 				res = res.result_data;
 				Vue.$cookies.set('auth', res.jwt);
 
-				state.surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
-				state.surveyList = [
-					{name: "테스트 (~3/10)", url: 'test', disabled: false},
-					{name: "진로 체험", url: 'jinro', disabled: true},
-				];
+				let surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
+				if (surveyList.result === 0) state.surveyList = surveyList.result_data;
+				else {
+					alert("설문 목록 로딩 실패\n새로고침합니다...");
+					location.reload();
+					return;
+				}
 
 				auth.isLogin = true;
 				auth.jwt = res.jwt;
