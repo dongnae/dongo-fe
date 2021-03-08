@@ -6,9 +6,10 @@
 <script>
 import Login from "@/component/Login";
 import SurveyList from "@/component/SurveyList";
+
 export default {
   name: 'Home',
-  components: {Login, SurveyList},
+  components: {Login, SurveyList}
 }
 </script>
 

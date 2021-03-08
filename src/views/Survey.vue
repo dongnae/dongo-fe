@@ -54,6 +54,7 @@ export default {
       let payload = {}, alertMsg = [];
       for (let obj of this.questions) {
         payload[obj.id] = this.selections[obj.id] || [];
+        if (!Array.isArray(payload[obj.id])) payload[obj.id] = [payload[obj.id]];
         if (payload[obj.id].length > 0) alertMsg.push(`${obj.quest} : ${payload[obj.id].join(", ")}`);
         else alertMsg.push(`${obj.quest} : (없음)`);
       }

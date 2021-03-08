@@ -21,28 +21,28 @@ export default new Vuex.Store({
 		surveyList: [],
 	},
 	mutations: {
+		async setSurveyList(state) {
+			let surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
+			if (surveyList.result === 0) state.surveyList = surveyList.result_data;
+			else {
+				alert("설문 목록 로딩 실패\n새로고침합니다...");
+				location.reload();
+			}
+		},
 		async tryAuth(state, payload) {
 			let auth = state.auth;
 			if (payload === null) {
 				auth.loading = false;
 				return;
 			}
+			Vue.$cookies.remove('auth');
 			let res = (await axios.post(`${location.origin}/api/auth/login`, JSON.stringify(payload))).data;
 
-			Vue.$cookies.remove('auth');
 			if (typeof res !== "object" || res.result !== 0) {
 				auth.errorMessage = res && res.result_data ? res.result_data : '오류가 발생했습니다.';
 			} else {
 				res = res.result_data;
 				Vue.$cookies.set('auth', res.jwt);
-
-				let surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
-				if (surveyList.result === 0) state.surveyList = surveyList.result_data;
-				else {
-					alert("설문 목록 로딩 실패\n새로고침합니다...");
-					location.reload();
-					return;
-				}
 
 				auth.isLogin = true;
 				auth.jwt = res.jwt;
