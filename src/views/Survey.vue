@@ -2,24 +2,27 @@
   <div class="survey-content">
     <h1 style="font-weight: 700;">{{ surveyInfo.name }}</h1>
     <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
-    <div
-        v-if="status === 0"
-        v-for="({quest, ans, multiple, id}) in questions"
-        :key="id"
-    >
-      <h3 style="font-weight: 500;">{{ quest }}</h3>
-      <v-select
-          v-model="selections[id]"
-          :items="ans"
-          :menu-props="{ maxHeight: '400' }"
-          :label="quest"
-          :multiple="multiple"
-          hint=""
-          persistent-hint
+    <div v-if="status === 0">
+      <div
 
-          style="margin-top: 10px;"
-      ></v-select>
+          v-for="({quest, ans, multiple, id}) in questions"
+          :key="id"
+      >
+        <h3 style="font-weight: 500;">{{ quest }}</h3>
+        <v-select
+            v-model="selections[id]"
+            :items="ans"
+            :menu-props="{ maxHeight: '400' }"
+            :label="quest"
+            :multiple="multiple"
+            hint=""
+            persistent-hint
+
+            style="margin-top: 10px;"
+        ></v-select>
+      </div>
     </div>
+
     <p v-else-if="status === 1">신청이 종료되었습니다.</p>
     <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
