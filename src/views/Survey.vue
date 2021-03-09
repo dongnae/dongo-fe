@@ -7,7 +7,7 @@
         :key="id"
     >
       <h3 style="font-weight: 500;">{{ quest }}</h3>
-      <v-select v-if="isProgressed"
+      <v-select v-if="status === 0"
                 v-model="selections[id]"
                 :items="ans"
                 :menu-props="{ maxHeight: '400' }"
@@ -18,8 +18,8 @@
 
                 style="margin-top: 10px;"
       ></v-select>
-      <p v-else-if="isEnd">신청이 종료되었습니다.</p>
-      <p v-else-if="isWait">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
+      <p v-else-if="status === 1">신청이 종료되었습니다.</p>
+      <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     </div>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
     <v-btn
@@ -47,6 +47,7 @@ export default {
 
       waitTime: "",
       waitId: null,
+      status: 4
     };
   },
   computed: {
@@ -99,6 +100,11 @@ export default {
         let ret = "";
         if (sec / 3600 >= 1) ret += `${parseInt(sec / 3600)}시간 `;
         if ((sec % 3600) / 60 >= 1) ret += `${parseInt((sec % 3600) / 60)}분 `;
+
+        if (this.isProgressed()) this.status = 0;
+        if (this.isEnd()) this.status = 1;
+        if (this.isWait()) this.status = 2;
+
         ret += `${parseInt(sec % 60)}초 `;
         this.waitTime = ret;
       }, 1000);
