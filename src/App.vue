@@ -8,12 +8,12 @@
     </div>
     <div class="body" data-app>
       <user-info v-if="$store.getters.auth.isLogin"></user-info>
+      <router-view v-else></router-view>
       <v-progress-circular
-          v-else
+          v-if="$store.getters.auth.loading"
           indeterminate
           color="primary"
       ></v-progress-circular>
-      <router-view></router-view>
     </div>
     <div class="bg-ellipse">
     </div>

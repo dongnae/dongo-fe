@@ -3,24 +3,25 @@
     <h1 style="font-weight: 700;">{{ surveyInfo.name }}</h1>
     <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
     <div
+        v-if="status === 0"
         v-for="({quest, ans, multiple, id}) in questions"
         :key="id"
     >
       <h3 style="font-weight: 500;">{{ quest }}</h3>
-      <v-select v-if="status === 0"
-                v-model="selections[id]"
-                :items="ans"
-                :menu-props="{ maxHeight: '400' }"
-                :label="quest"
-                :multiple="multiple"
-                hint=""
-                persistent-hint
+      <v-select
+          v-model="selections[id]"
+          :items="ans"
+          :menu-props="{ maxHeight: '400' }"
+          :label="quest"
+          :multiple="multiple"
+          hint=""
+          persistent-hint
 
-                style="margin-top: 10px;"
+          style="margin-top: 10px;"
       ></v-select>
-      <p v-else-if="status === 1">신청이 종료되었습니다.</p>
-      <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     </div>
+    <p v-else-if="status === 1">신청이 종료되었습니다.</p>
+    <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
     <v-btn
         color="primary"
@@ -124,8 +125,7 @@ export default {
     if (data.result === 0) {
       this.questions = data.result_data;
       this.runAlarm();
-    }
-    else {
+    } else {
       alert("설문지 로딩 실패\n새로고침합니다...");
       location.reload();
     }
