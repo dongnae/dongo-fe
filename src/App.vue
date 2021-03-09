@@ -7,13 +7,14 @@
       </div>
     </div>
     <div class="body" data-app>
-      <user-info v-if="$store.getters.auth.isLogin"></user-info>
-      <router-view v-if="!$store.getters.auth.isLogin"></router-view>
       <v-progress-circular
           v-if="$store.getters.auth.loading"
           indeterminate
           color="primary"
       ></v-progress-circular>
+      <router-view v-else-if="!$store.getters.auth.isLogin"></router-view>
+
+      <user-info v-if="$store.getters.auth.isLogin"></user-info>
     </div>
     <div class="bg-ellipse">
     </div>
