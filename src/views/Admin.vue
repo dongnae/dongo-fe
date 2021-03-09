@@ -2,10 +2,7 @@
   <div style="width: 110%;">
     <div v-for="({id, name, quest}) in Object.values(survey)" :key="id">
       <h1 style="font-weight: bold;">{{ name }}</h1>
-      <table
-          v-for="({id: id1, name1}) in quest"
-          :key="id1"
-          style="table-layout: auto;">
+      <table style="table-layout: auto;">
         <thead>
         <tr>
           <td style="width: 30%">이름</td>
