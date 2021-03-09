@@ -12,7 +12,7 @@
           indeterminate
           color="primary"
       ></v-progress-circular>
-      <router-view v-else-if="!$store.getters.auth.isLogin"></router-view>
+      <router-view v-else-if="$store.getters.auth.isLogin"></router-view>
 
       <user-info v-if="$store.getters.auth.isLogin"></user-info>
     </div>
