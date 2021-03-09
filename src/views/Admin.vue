@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     async getAllStudent() {
-      let ret = (await axios.get("${location.origin}/api/survey/result")).data;
+      let ret = (await axios.get(`${location.origin}/api/survey/result`)).data;
       if (ret.result !== 0) {
         alert('로딩 실패');
         this.$router.push({
