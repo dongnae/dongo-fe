@@ -8,7 +8,7 @@
     </div>
     <div class="body" data-app>
       <user-info v-if="$store.getters.auth.isLogin"></user-info>
-      <router-view v-else></router-view>
+      <router-view v-if="!$store.getters.auth.isLogin"></router-view>
       <v-progress-circular
           v-if="$store.getters.auth.loading"
           indeterminate
