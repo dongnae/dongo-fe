@@ -97,7 +97,7 @@ export default {
       if (this.id) clearInterval(this.id);
       this.id = setInterval(() => {
         if (this.isProgressed()) clearInterval(this.id);
-        let sec = parseInt(this.surveyInfo.startDate - Date.now() / 1000);
+        let sec = parseInt((this.surveyInfo.startDate - Date.now()) / 1000);
         let ret = "";
         if (sec / 3600 >= 1) ret += `${parseInt(sec / 3600)}시간 `;
         if ((sec % 3600) / 60 >= 1) ret += `${parseInt((sec % 3600) / 60)}분 `;
