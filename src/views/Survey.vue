@@ -4,7 +4,6 @@
     <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
     <div v-if="status === 0">
       <div
-
           v-for="({quest, ans, multiple, id}) in questions"
           :key="id"
       >
@@ -115,6 +114,7 @@ export default {
     }
   },
   async created() {
+    await this.$store.commit('setSurveyList');
     let find = this.$store.getters.surveyList.filter(({url, name}) => url === this.id);
     if (find.length !== 1) {
       await this.$router.push({

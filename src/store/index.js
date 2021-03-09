@@ -39,7 +39,7 @@ export default new Vuex.Store({
 			let res = (await axios.post(`${location.origin}/api/auth/login`, JSON.stringify(payload))).data;
 
 			if (typeof res !== "object" || res.result !== 0) {
-				auth.errorMessage = res && res.result_data ? res.result_data : '오류가 발생했습니다.';
+				if (payload.jwt === undefined) auth.errorMessage = res && res.result_data ? res.result_data : '오류가 발생했습니다.';
 			} else {
 				res = res.result_data;
 				Vue.$cookies.set('auth', res.jwt);
