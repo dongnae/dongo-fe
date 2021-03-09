@@ -90,6 +90,7 @@ export default {
         return;
       }
 
+      this.$store.commit('setSurveyList');
       alert("설문을 제출하였습니다.");
       await this.$router.push({
         name: 'Home'
