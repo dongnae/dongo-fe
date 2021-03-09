@@ -12,7 +12,7 @@
           indeterminate
           color="primary"
       ></v-progress-circular>
-      <router-view v-else-if="!$store.getters.auth.loading"></router-view>
+      <router-view class="survey-content" v-else-if="!$store.getters.auth.loading"></router-view>
 
       <user-info v-if="$store.getters.auth.isLogin"></user-info>
     </div>
@@ -283,4 +283,25 @@ body {
     transform: translateX(0) translateY(0);
   }
 }
+</style>
+
+
+<style scoped>
+.survey-content {
+  width: 100%;
+  overflow-y: scroll;
+  padding: 50px 15%;
+  overflow-x: hidden;
+}
+
+
+@media (max-width: 1000px) {
+
+  .survey-content {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+}
+
 </style>

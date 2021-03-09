@@ -1,5 +1,5 @@
 <template>
-  <div class="survey-content">
+  <div>
     <h1 style="font-weight: 700;">{{ surveyInfo.name }}</h1>
     <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
     <div v-if="status === 0">
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <p v-else-if="status === 1">신청이 종료되었습니다.</p>
+    <p v-else-if="status === 1">설문이 종료되었습니다.</p>
     <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
     <v-btn
@@ -136,23 +136,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.survey-content {
-  width: 100%;
-  overflow-y: scroll;
-  padding: 50px 15%;
-  overflow-x: hidden;
-}
-
-
-@media (max-width: 1000px) {
-
-  .survey-content {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-
-}
-
-</style>

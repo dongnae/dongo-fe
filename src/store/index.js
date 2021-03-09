@@ -22,6 +22,7 @@ export default new Vuex.Store({
 			num: "",
 			name: "",
 			isLogin: false,
+			isAdmin: false,
 
 			errorMessage: "",
 
@@ -54,6 +55,7 @@ export default new Vuex.Store({
 				auth.jwt = res.jwt;
 				auth.num = res.num;
 				auth.name = res.name;
+				auth.isAdmin = res.isAdmin || false;
 			}
 			auth.loading = false;
 		}
@@ -61,11 +63,9 @@ export default new Vuex.Store({
 	actions: {
 		tryAutoLogin({commit}) {
 			let jwt = Vue.$cookies.get("auth");
-			setTimeout(() => {
-				commit('tryAuth', jwt ? {
-					jwt: jwt
-				} : null);
-			}, 1000);
+			commit('tryAuth', jwt ? {
+				jwt: jwt
+			} : null);
 		},
 		tryLogin({commit}, {num, name}) {
 			commit('tryAuth', {
