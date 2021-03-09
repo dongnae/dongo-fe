@@ -31,6 +31,7 @@
         outlined
         style="margin-top: 20px; width: 100%;"
         @click="submit"
+        :hidden="status !== 0"
     >제출하기
     </v-btn>
   </div>
@@ -102,14 +103,14 @@ export default {
         if (this.isProgressed()) clearInterval(this.id);
         let sec = parseInt((this.surveyInfo.startDate - Date.now()) / 1000);
         let ret = "";
-        if (sec / 3600 >= 1) ret += `${parseInt(sec / 3600)}시간 `;
-        if ((sec % 3600) / 60 >= 1) ret += `${parseInt((sec % 3600) / 60)}분 `;
+        if (parseInt(sec / 3600)) ret += `${parseInt(sec / 3600)}시간 `;
+        if (parseInt((sec % 3600) / 60)) ret += `${parseInt((sec % 3600) / 60)}분 `;
+        if (sec % 60) ret += `${parseInt(sec % 60)}초 `;
 
         if (this.isProgressed()) this.status = 0;
         if (this.isEnd()) this.status = 1;
         if (this.isWait()) this.status = 2;
 
-        ret += `${parseInt(sec % 60)}초 `;
         this.waitTime = ret;
       }, 1000);
     }
