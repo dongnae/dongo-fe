@@ -32,9 +32,6 @@ export default {
   data() {
     return {};
   },
-  created() {
-    this.$store.commit('setSurveyList');
-  }
 }
 </script>
 

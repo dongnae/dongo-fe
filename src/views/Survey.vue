@@ -114,7 +114,6 @@ export default {
     }
   },
   async created() {
-    await this.$store.commit('setSurveyList');
     let find = this.$store.getters.surveyList.filter(({url, name}) => url === this.id);
     if (find.length !== 1) {
       await this.$router.push({

@@ -6,6 +6,15 @@ import VueCookies from 'vue-cookies';
 Vue.use(Vuex);
 Vue.use(VueCookies);
 
+const setSurveyList = async (state) => {
+	let surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
+	if (surveyList.result === 0) state.surveyList = surveyList.result_data;
+	else {
+		alert("설문 목록 로딩 실패\n새로고침합니다...");
+		location.reload();
+	}
+};
+
 export default new Vuex.Store({
 	state: {
 		auth: {
@@ -22,12 +31,7 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		async setSurveyList(state) {
-			let surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
-			if (surveyList.result === 0) state.surveyList = surveyList.result_data;
-			else {
-				alert("설문 목록 로딩 실패\n새로고침합니다...");
-				location.reload();
-			}
+			await setSurveyList(state);
 		},
 		async tryAuth(state, payload) {
 			let auth = state.auth;
@@ -43,6 +47,8 @@ export default new Vuex.Store({
 			} else {
 				res = res.result_data;
 				Vue.$cookies.set('auth', res.jwt);
+
+				await setSurveyList(state);
 
 				auth.isLogin = true;
 				auth.jwt = res.jwt;
