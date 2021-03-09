@@ -7,7 +7,8 @@
       </div>
     </div>
     <div class="body" data-app>
-      <router-view v-if="!$store.getters.auth.loading"></router-view>
+      <user-info v-if="$store.getters.auth.isLogin"></user-info>
+      <router-view v-else></router-view>
       <v-progress-circular
           v-else
           indeterminate
@@ -20,7 +21,9 @@
 </template>
 
 <script>
+import UserInfo from "@/component/UserInfo";
 export default {
+  components: {UserInfo},
   data() {
     return {};
   },
