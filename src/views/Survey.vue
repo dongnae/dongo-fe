@@ -7,17 +7,19 @@
         :key="id"
     >
       <h3 style="font-weight: 500;">{{ quest }}</h3>
-      <v-select
-          v-model="selections[id]"
-          :items="ans"
-          :menu-props="{ maxHeight: '400' }"
-          :label="quest"
-          :multiple="multiple"
-          hint=""
-          persistent-hint
+      <v-select v-if="isProgressed"
+                v-model="selections[id]"
+                :items="ans"
+                :menu-props="{ maxHeight: '400' }"
+                :label="quest"
+                :multiple="multiple"
+                hint=""
+                persistent-hint
 
-          style="margin-top: 10px;"
+                style="margin-top: 10px;"
       ></v-select>
+      <p v-else-if="isEnd">신청이 종료되었습니다.</p>
+      <p v-else-if="isWait">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     </div>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
     <v-btn
@@ -42,6 +44,9 @@ export default {
       questions: [],
       selections: {},
       errorMessage: null,
+
+      waitTime: "",
+      waitId: null,
     };
   },
   computed: {
@@ -50,6 +55,15 @@ export default {
     }
   },
   methods: {
+    isProgressed() {
+      return this.surveyInfo.startDate <= Date.now() && Date.now() <= this.surveyInfo.endDate;
+    },
+    isEnd() {
+      return this.surveyInfo.endDate < Date.now();
+    },
+    isWait() {
+      return this.surveyInfo.startDate > Date.now();
+    },
     async submit() {
       let payload = {}, alertMsg = [];
       for (let obj of this.questions) {
@@ -76,6 +90,18 @@ export default {
       await this.$router.push({
         name: 'Home'
       });
+    },
+    runAlarm() {
+      if (this.id) clearInterval(this.id);
+      this.id = setInterval(() => {
+        if (this.isProgressed()) clearInterval(this.id);
+        let sec = parseInt(this.surveyInfo.startDate - Date.now() / 1000);
+        let ret = "";
+        if (sec / 3600 >= 1) ret += `${parseInt(sec / 3600)}시간 `;
+        if ((sec % 3600) / 60 >= 1) ret += `${parseInt((sec % 3600) / 60)}분 `;
+        ret += `${parseInt(sec % 60)}초 `;
+        this.waitTime = ret;
+      }, 1000);
     }
   },
   async created() {
@@ -89,7 +115,10 @@ export default {
     this.surveyInfo = find.shift();
 
     let data = (await axios.get(`${location.origin}/api/survey/detail?id=${encodeURI(this.id)}`)).data;
-    if (data.result === 0) this.questions = data.result_data;
+    if (data.result === 0) {
+      this.questions = data.result_data;
+      this.runAlarm();
+    }
     else {
       alert("설문지 로딩 실패\n새로고침합니다...");
       location.reload();
