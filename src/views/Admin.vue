@@ -1,6 +1,6 @@
 <template>
   <div style="width: 110%;">
-    <div v-for="({id, name, quest}) in survey" :key="id">
+    <div v-for="({id, name, quest}) in Object.values(survey)" :key="id">
       <h1 style="font-weight: bold;">{{ name }}</h1>
       <table
           v-for="({id: id1, name1}) in quest"
@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="{value, count, students} of quest">
+        <tr v-for="{value, count, students} of Object.values(quest)">
           <td style="width: 30%;">{{ value }}</td>
           <td style="width: 30%;">{{ count === -1 ? "∞" : (count > 0 ? `${count}명 남음` : `마감됨`) }}</td>
           <td style="width: 40%; padding: 0;">
