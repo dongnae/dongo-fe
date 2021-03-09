@@ -26,7 +26,7 @@
     <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
     <v-btn
-        v-if="status !== 0"
+        v-if="status === 0"
         color="primary"
         elevation="2"
         outlined
