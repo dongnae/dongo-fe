@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import Login from "@/component/Login";
 
 export default {
@@ -42,22 +41,12 @@ export default {
   components: {Login},
   data() {
     return {
-      survey: [],
     };
   },
-  methods: {
-    async getAllStudent() {
-      let ret = (await axios.get(`${location.origin}/api/survey/result`)).data;
-      if (ret.result !== 0) {
-        alert('로딩 실패');
-        this.$router.push({
-          name: 'Home'
-        });
-        return;
+  computed: {
+      survey() {
+        return this.$store.getters.surveyResult;
       }
-
-      this.survey = ret.result_data;
-    }
   },
   created() {
     if (this.$store.getters.auth.isLogin && !this.$store.getters.auth.isAdmin) {
@@ -65,23 +54,7 @@ export default {
       this.$router.push({
         name: 'Home'
       });
-      return;
     }
-    if (this.$store.getters.auth.isAdmin) this.getAllStudent();
-
-    this.unwatch = this.$store.watch(
-        (state, getters) => getters.auth,
-        (newValue, oldValue) => {
-          if (this.$store.getters.auth.isLogin && !this.$store.getters.auth.isAdmin) {
-            alert('권한이 부족합니다.');
-            this.$router.push({
-              name: 'Home'
-            });
-            return;
-          }
-          if (this.$store.getters.auth.isAdmin) this.getAllStudent();
-        },
-    );
   },
   beforeDestroy() {
     this.unwatch();

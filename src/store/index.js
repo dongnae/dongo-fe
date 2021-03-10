@@ -29,6 +29,7 @@ export default new Vuex.Store({
 			loading: true,
 		},
 		surveyList: [],
+		surveyResult: [],
 	},
 	mutations: {
 		async setSurveyList(state) {
@@ -56,6 +57,19 @@ export default new Vuex.Store({
 				auth.num = res.num;
 				auth.name = res.name;
 				auth.isAdmin = res.isAdmin || false;
+
+				if (auth.isAdmin) {
+					let ret = (await axios.get(`${location.origin}/api/survey/result`)).data;
+					if (ret.result !== 0) {
+						alert('로딩 실패');
+						await this.$router.push({
+							name: 'Home'
+						});
+						return;
+					}
+
+					state.surveyResult = ret.result_data;
+				}
 			}
 			auth.loading = false;
 		}
@@ -80,6 +94,9 @@ export default new Vuex.Store({
 		},
 		surveyList(state) {
 			return state.surveyList;
+		},
+		surveyResult(state) {
+			return state.surveyResult;
 		},
 	}
 })
