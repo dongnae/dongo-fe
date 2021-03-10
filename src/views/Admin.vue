@@ -68,18 +68,23 @@ export default {
       return;
     }
     if (this.$store.getters.auth.isAdmin) this.getAllStudent();
+
+    this.unwatch = this.$store.watch(
+        (state, getters) => getters.auth,
+        (newValue, oldValue) => {
+          if (this.$store.getters.auth.isLogin && !this.$store.getters.auth.isAdmin) {
+            alert('권한이 부족합니다.');
+            this.$router.push({
+              name: 'Home'
+            });
+            return;
+          }
+          if (this.$store.getters.auth.isAdmin) this.getAllStudent();
+        },
+    );
   },
-  watch: {
-    '$store.getters.auth'() {
-      if (this.$store.getters.auth.isLogin && !this.$store.getters.auth.isAdmin) {
-        alert('권한이 부족합니다.');
-        this.$router.push({
-          name: 'Home'
-        });
-        return;
-      }
-      if (this.$store.getters.auth.isAdmin) this.getAllStudent();
-    }
+  beforeDestroy() {
+    this.unwatch();
   }
 }
 </script>
