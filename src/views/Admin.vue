@@ -60,13 +60,7 @@ export default {
     }
   },
   created() {
-    if (!this.$store.getters.auth.isLogin) {
-      this.$router.push({
-        name: 'Home'
-      });
-      return;
-    }
-    if (!this.$store.getters.auth.isAdmin) {
+    if (this.$store.getters.auth.isLogin && !this.$store.getters.auth.isAdmin) {
       alert('권한이 부족합니다.');
       this.$router.push({
         name: 'Home'
