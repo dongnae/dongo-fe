@@ -1,5 +1,6 @@
 <template>
-  <div style="width: 110%;">
+  <login v-if="!$store.getters.auth.isLogin"></login>
+  <div v-else style="width: 110%;">
     <div v-for="({id, name, quest}) in Object.values(survey)" :key="id">
       <h1 style="font-weight: bold;">{{ name }}</h1>
       <table style="table-layout: auto;">
@@ -20,7 +21,6 @@
               <tr v-for="student of students">
                 <td>{{ student.num }}</td>
                 <td>{{ student.name }}</td>
-                <!--<td>{{ (new Date(student.registerTime)).toLocaleString() }}</td>-->
               </tr>
               </tbody>
             </table>
@@ -35,9 +35,11 @@
 
 <script>
 import axios from "axios";
+import Login from "@/component/Login";
 
 export default {
   name: "Admin",
+  components: {Login},
   data() {
     return {
       survey: [],
