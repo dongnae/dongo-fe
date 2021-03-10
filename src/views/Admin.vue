@@ -67,7 +67,19 @@ export default {
       });
       return;
     }
-    this.getAllStudent();
+    if (this.$store.getters.auth.isAdmin) this.getAllStudent();
+  },
+  watch: {
+    '$store.getters.auth'() {
+      if (this.$store.getters.auth.isLogin && !this.$store.getters.auth.isAdmin) {
+        alert('권한이 부족합니다.');
+        this.$router.push({
+          name: 'Home'
+        });
+        return;
+      }
+      if (this.$store.getters.auth.isAdmin) this.getAllStudent();
+    }
   }
 }
 </script>
@@ -79,45 +91,57 @@ export default {
   flex-direction: row;
   justify-content: space-between;
 }
+
 .unregister {
   width: 30%;
 }
+
 .register {
   width: 65%;
 }
+
 table {
   border-collapse: collapse;
   width: 100%;
 }
+
 th, td {
   border: 1px solid #ddd;
   text-align: left;
   padding: 15px;
 }
+
 .unregister th, .unregister td {
   padding: 10px;
 }
+
 .register table table th, .register table table td {
   border: 0;
 }
+
 .register table table td {
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
+
 .register table table tr td:nth-last-child(1) {
   border-right: 0;
 }
+
 .register table table tr:nth-last-child(1) td {
   border-bottom: 0;
 }
+
 @media only screen and (max-width: 1280px) {
   .container {
     flex-direction: column;
     justify-content: center;
   }
+
   .container > * {
     width: 100%;
   }
+
   .register {
     margin-bottom: 40px;
   }
