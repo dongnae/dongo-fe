@@ -7,7 +7,7 @@ Vue.use(Vuex);
 Vue.use(VueCookies);
 
 const setSurveyList = async (state) => {
-	let surveyList = (await axios.get(`${location.origin}/api/survey/list`)).data;
+	let surveyList = (await axios.get(`https://dnhs.me/api/survey/list`)).data;
 	if (surveyList.result === 0) state.surveyList = surveyList.result_data;
 	else {
 		alert("설문 목록 로딩 실패\n새로고침합니다...");
@@ -42,7 +42,7 @@ export default new Vuex.Store({
 				return;
 			}
 			Vue.$cookies.remove('auth');
-			let res = (await axios.post(`${location.origin}/api/auth/login`, JSON.stringify(payload))).data;
+			let res = (await axios.post(`https://dnhs.me/api/auth/login`, JSON.stringify(payload))).data;
 
 			if (typeof res !== "object" || res.result !== 0) {
 				if (payload.jwt === undefined) auth.errorMessage = res && res.result_data ? res.result_data : '오류가 발생했습니다.';
@@ -59,7 +59,7 @@ export default new Vuex.Store({
 				auth.isAdmin = res.isAdmin || false;
 
 				if (auth.isAdmin) {
-					let ret = (await axios.get(`${location.origin}/api/survey/result`)).data;
+					let ret = (await axios.get(`https://dnhs.me/api/survey/result`)).data;
 					if (ret.result !== 0) {
 						alert('로딩 실패');
 						await this.$router.push({

@@ -81,7 +81,7 @@ export default {
         else alertMsg.push(`${obj.quest} : (없음)`);
       }
       if (!confirm(`설문을 제출하시겠습니까?\n\n- 설문 작성 내용 : \n${alertMsg.join("\n")}\n\n※ 한 번만 제출할 수 있습니다.`)) return;
-      let ret = (await axios.post(`${location.origin}/api/survey/submit`, JSON.stringify({
+      let ret = (await axios.post(`https://dnhs.me/api/survey/submit`, JSON.stringify({
         id: this.id,
         data: payload
       }))).data;
@@ -136,7 +136,7 @@ export default {
       return;
     }
 
-    let data = (await axios.get(`${location.origin}/api/survey/detail?id=${encodeURI(this.id)}`)).data;
+    let data = (await axios.get(`https://dnhs.me/api/survey/detail?id=${encodeURI(this.id)}`)).data;
     if (data.result === 0) {
       this.questions = data.result_data;
       this.runAlarm();
