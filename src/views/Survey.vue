@@ -2,7 +2,10 @@
   <div>
     <h1 style="font-weight: 700;">{{ surveyInfo.name }}</h1>
     <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
-    <div v-if="status === 0">
+    <div v-if="cantSubmitted !== null">
+      {{ cantSubmitted }}
+    </div>
+    <div v-else-if="status === 0">
       <div
           v-for="({quest, ans, multiple, id}) in questions"
           :key="id"
@@ -21,7 +24,6 @@
         ></v-select>
       </div>
     </div>
-
     <p v-else-if="status === 1">설문이 종료되었습니다.</p>
     <p v-else-if="status === 2">{{ `설문 시작까지 ${waitTime} 남았습니다.` }}</p>
     <p class="error--text" style="font-size: 12px;">{{ errorMessage }}</p>
@@ -48,6 +50,7 @@ export default {
       questions: [],
       selections: {},
       errorMessage: null,
+      cantSubmitted: null,
 
       waitTime: "",
       waitId: null,
@@ -124,6 +127,14 @@ export default {
       return;
     }
     this.surveyInfo = find.shift();
+    if (typeof this.surveyInfo.error === "string") {
+      //this.cantSubmitted = this.surveyInfo.error;
+      alert(this.surveyInfo.error);
+      await this.$router.push({
+        name: 'Home'
+      });
+      return;
+    }
 
     let data = (await axios.get(`${location.origin}/api/survey/detail?id=${encodeURI(this.id)}`)).data;
     if (data.result === 0) {
