@@ -1,6 +1,8 @@
 <template>
   <div style="position: fixed; top: 20px; right: 20px; display: flex; justify-content: center; color: white;">
-    <p style="display: inline-block; padding: 0 5px;">{{ $store.getters.auth.num === "admin" ? "관리자님" : `${$store.getters.auth.name} (${$store.getters.auth.num})님` }} | </p>
+    <p style="display: inline-block; padding: 0 5px;">
+      {{ $store.getters.auth.num === "admin" ? "관리자님" : `${$store.getters.auth.name} (${$store.getters.auth.num})님` }}
+      | </p>
     <p @click="logout" style="font-weight: bold; text-decoration: underline; cursor: pointer;">로그아웃</p>
   </div>
 </template>

@@ -78,7 +78,13 @@ export default {
         payload[obj.id] = this.selections[obj.id] || [];
         if (!Array.isArray(payload[obj.id])) payload[obj.id] = [payload[obj.id]];
         if (payload[obj.id].length > 0) alertMsg.push(`${obj.quest} : ${payload[obj.id].join(", ")}`);
-        else alertMsg.push(`${obj.quest} : (없음)`);
+        else {
+          if (obj.required) {
+            alert(`"${obj.quest}"에 대한 답을 선택하세요.`);
+            return;
+          }
+          alertMsg.push(`${obj.quest} : (없음)`);
+        }
       }
       if (!confirm(`설문을 제출하시겠습니까?\n\n- 설문 작성 내용 : \n${alertMsg.join("\n")}\n\n※ 한 번만 제출할 수 있습니다.`)) return;
       let ret = (await axios.post(`${location.origin}/api/survey/submit`, JSON.stringify({
@@ -106,9 +112,9 @@ export default {
         if (this.isProgressed()) clearInterval(this.id);
         let sec = parseInt((this.surveyInfo.startDate - Date.now()) / 1000);
         let ret = "";
-        if (parseInt(sec / 3600)) ret += `${parseInt(sec / 3600)}시간 `;
-        if (parseInt((sec % 3600) / 60)) ret += `${parseInt((sec % 3600) / 60)}분 `;
-        if (sec % 60) ret += `${parseInt(sec % 60)}초 `;
+        if (parseInt(sec / 3600) > 0) ret += `${parseInt(sec / 3600)}시간 `;
+        if (parseInt((sec % 3600) / 60) > 0) ret += `${parseInt((sec % 3600) / 60)}분 `;
+        if (sec % 60 > 0) ret += `${parseInt(sec % 60)}초 `;
 
         if (this.isProgressed()) this.status = 0;
         if (this.isEnd()) this.status = 1;
