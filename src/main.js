@@ -9,14 +9,6 @@ import '@mdi/font/css/materialdesignicons.css'
 import VueCookies from 'vue-cookies';
 
 import axios from "axios";
-
-axios.interceptors.request.use(function (request) {
-	if (Vue.$cookies.get('auth')) request.headers.Authorization = Vue.$cookies.get('auth');
-	request.headers["Content-Type"] = "application/json; charset=utf-8";
-	return request;
-}, function (error) {
-	return Promise.reject(error);
-});
 axios.interceptors.response.use(function (response) {
 	return response;
 }, function (error) {
