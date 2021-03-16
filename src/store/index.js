@@ -41,7 +41,6 @@ export default new Vuex.Store({
 				auth.loading = false;
 				return;
 			}
-			Vue.$cookies.remove('auth');
 			let res = (await axios.post(`${location.origin}/api/auth/login`, JSON.stringify(payload))).data;
 
 			if (typeof res !== "object" || res.result !== 0) {
