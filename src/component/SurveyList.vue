@@ -23,6 +23,14 @@
         </v-list-item>
       </div>
     </div>
+    <div v-if="$store.getters.auth.isAdmin">
+      <v-list-item link to="/admin">
+        <v-list-item-title>관리 페이지</v-list-item-title>
+        <v-list-item-icon>
+          <v-icon v-text="'mdi-arrow-right'"></v-icon>
+        </v-list-item-icon>
+      </v-list-item>
+    </div>
   </div>
 </template>
 
