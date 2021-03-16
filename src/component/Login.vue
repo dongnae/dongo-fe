@@ -26,9 +26,10 @@
               value => (value && value.length) ? true : '필수 항목입니다.',
               value => (value && value.length >= 2) ? true : '이름을 정확하게 입력하세요.',
           ]"
-          label="이름"
+          :type="login_input.num === 'admin' ? 'password' : 'text'"
+          :label="login_input.num === 'admin' ? '비밀번호' : '이름'"
           counter="0"
-          hint="이름을 입력하세요."
+          :hint="(login_input.num === 'admin' ? '비밀번호를' : '이름을') + ' 입력하세요,'"
           hide-details="auto"
           filled
           maxlength="4"
