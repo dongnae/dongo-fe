@@ -8,7 +8,7 @@
               style="margin: 10px 0;">
     </v-select>
     <v-expansion-panels v-if="sort_by === 0" style="width: 110%;">
-      <v-expansion-panel v-for="({id, name, quest}) in Object.values(survey.group_by)" :key="id">
+      <v-expansion-panel v-for="({id, name, quest}) in Object.values(survey.ans_by)" :key="id">
         <v-expansion-panel-header><h1 style="font-weight: bold;">{{ name }}</h1></v-expansion-panel-header>
         <v-expansion-panel-content>
           <table style="table-layout: auto;">
@@ -40,7 +40,7 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <v-expansion-panels v-else-if="sort_by === 1" style="width: 110%;">
-      <v-expansion-panel v-for="({id, name, group}) in Object.values(survey.class_by)" :key="id">
+      <v-expansion-panel v-for="({id, name, group}) in Object.values(survey.group_by)" :key="id">
         <v-expansion-panel-header><h1 style="font-weight: bold;">{{ name }}</h1></v-expansion-panel-header>
         <v-expansion-panel-content>
           <table style="table-layout: auto;">

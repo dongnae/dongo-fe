@@ -29,7 +29,10 @@ export default new Vuex.Store({
 			loading: true,
 		},
 		surveyList: [],
-		surveyResult: [],
+		surveyResult: {
+			group_by: [],
+			ans_by: [],
+		},
 	},
 	mutations: {
 		async setSurveyList(state) {
