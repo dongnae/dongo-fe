@@ -19,7 +19,6 @@
             :multiple="multiple"
             hint=""
             persistent-hint
-
             style="margin-top: 10px;"
         ></v-select>
       </div>

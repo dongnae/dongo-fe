@@ -1,8 +1,14 @@
 <template>
   <login v-if="!$store.getters.auth.isLogin"></login>
   <div v-else>
-    <v-expansion-panels style="width: 110%;">
-      <v-expansion-panel v-for="({id, name, quest}) in Object.values(survey)" :key="id">
+    <v-select v-model="sort_by"
+              :items="[{text: '답변 기준 정렬', value: 0},{text: '반별 정렬', value: 1},/*{text: '미답변자만 보기', value: 2}*/]"
+              :menu-props="{ maxHeight: '400' }"
+              label="정렬 기준을 선택하세요."
+              style="margin: 10px 0;">
+    </v-select>
+    <v-expansion-panels v-if="sort_by === 0" style="width: 110%;">
+      <v-expansion-panel v-for="({id, name, quest}) in Object.values(survey.group_by)" :key="id">
         <v-expansion-panel-header><h1 style="font-weight: bold;">{{ name }}</h1></v-expansion-panel-header>
         <v-expansion-panel-content>
           <table style="table-layout: auto;">
@@ -33,6 +39,47 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-expansion-panels v-else-if="sort_by === 1" style="width: 110%;">
+      <v-expansion-panel v-for="({id, name, group}) in Object.values(survey.class_by)" :key="id">
+        <v-expansion-panel-header><h1 style="font-weight: bold;">{{ name }}</h1></v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <table style="table-layout: auto;">
+            <thead>
+            <tr>
+              <td style="width: 15%">반</td>
+              <td style="width: 85%; padding: 0;">
+                <table style="border-collapse: collapse;">
+                  <thead>
+                  <tr>
+                    <td style="width: 25%;">학번</td>
+                    <td style="width: 25%;">이름</td>
+                    <td style="width: 50%;">답변</td>
+                  </tr>
+                  </thead>
+                </table>
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="{value, students} of Object.values(group)">
+              <td style="width: 15%;">{{ value }}</td>
+              <td style="width: 85%; padding: 0;">
+                <table style="border-collapse: collapse;">
+                  <tbody>
+                  <tr v-for="student of students">
+                    <td style="width: 25%;">{{ student.num }}</td>
+                    <td style="width: 25%;">{{ student.name }}</td>
+                    <td style="width: 50%;">{{ student.ans }}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 
 </template>
@@ -44,7 +91,9 @@ export default {
   name: "Admin",
   components: {Login},
   data() {
-    return {};
+    return {
+      sort_by: 0, //0: group by, 1: class by, 2: 미신청자
+    };
   },
   computed: {
     survey() {
