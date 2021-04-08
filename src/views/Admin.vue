@@ -2,7 +2,7 @@
   <login v-if="!$store.getters.auth.isLogin"></login>
   <div v-else>
     <v-select v-model="sort_by"
-              :items="[{text: '답변 기준 정렬', value: 0}, {text: '반별 정렬', value: 1}, {text: '미답변자만 보기', value: 2}]"
+              :items="[{text: '답변 기준 정렬', value: 0}, {text: '반별 정렬', value: 1}, {text: '미답변자만 보기', value: 2}, {text: '답변자만 보기', value: 3}]"
               :menu-props="{ maxHeight: '400' }"
               label="정렬 기준을 선택하세요."
               style="margin: 10px 0;">
@@ -81,6 +81,45 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <v-expansion-panels v-else-if="sort_by === 2" style="width: 110%;">
+      <v-expansion-panel v-for="({id, name, group}) in Object.values(survey.group_by)" :key="id">
+        <v-expansion-panel-header><h1 style="font-weight: bold;">{{ name }}</h1></v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <table style="table-layout: auto;">
+            <thead>
+            <tr>
+              <td style="width: 20%">반</td>
+              <td style="width: 80%; padding: 0;">
+                <table style="border-collapse: collapse;">
+                  <thead>
+                  <tr>
+                    <td style="width: 40%;">학번</td>
+                    <td style="width: 40%;">이름</td>
+                  </tr>
+                  </thead>
+                </table>
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="{value, students} of Object.values(group)">
+              <td style="width: 20%;">{{ value }}</td>
+              <td style="width: 80%; padding: 0;">
+                <table style="border-collapse: collapse;">
+                  <tbody>
+                  <tr v-for="student of students" v-if="student.ans === '-'">
+                    <td style="width: 40%;">{{ student.num }}</td>
+                    <td style="width: 40%;">{{ student.name }}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-expansion-panels v-else-if="sort_by === 3" style="width: 110%;">
       <v-expansion-panel v-for="({id, name, group}) in Object.values(survey.group_by)" :key="id">
         <v-expansion-panel-header><h1 style="font-weight: bold;">{{ name }}</h1></v-expansion-panel-header>
         <v-expansion-panel-content>
