@@ -18,7 +18,6 @@ const setSurveyList = async (state) => {
 export default new Vuex.Store({
 	state: {
 		auth: {
-			jwt: "",
 			num: "",
 			name: "",
 			isLogin: false,
@@ -54,7 +53,6 @@ export default new Vuex.Store({
 				await setSurveyList(state);
 
 				auth.isLogin = true;
-				auth.jwt = res.jwt;
 				auth.num = res.num;
 				auth.name = res.name;
 				auth.isAdmin = res.isAdmin || false;
@@ -78,9 +76,7 @@ export default new Vuex.Store({
 	actions: {
 		tryAutoLogin({commit}) {
 			let jwt = Vue.$cookies.get("auth");
-			commit('tryAuth', jwt ? {
-				jwt: jwt
-			} : null);
+			commit('tryAuth', jwt ? {jwt} : null);
 		},
 		tryLogin({commit}, {num, name}) {
 			commit('tryAuth', {
