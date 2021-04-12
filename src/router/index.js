@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Survey from "@/views/Survey";
 import Admin from "@/views/Admin";
+import ErrorPage from "@/views/ErrorPage";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: Admin,
+  },
+  {
+    path: '/*',
+    name: 'Error',
+    component: ErrorPage,
   }
 ]
 

@@ -6,11 +6,18 @@
       {{ cantSubmitted }}
     </div>
     <div v-else-if="status === 0">
+      <p v-if="questions.filter(({unique}) => unique).length > 0">
+        {{ questions.filter(({unique}) => unique).map(({quest}) => `"${quest}"`).join(", ") }}에 대한 답변은 서로 달라야 합니다.</p>
       <div
           v-for="({quest, ans, multiple, id}) in questions"
           :key="id"
       >
-        <h3 style="font-weight: 500;">{{ quest }}</h3>
+        <div style="width: 100%; display: flex; justify-content: space-between">
+          <h3 style="font-weight: 500;">{{ quest }}</h3>
+          <v-btn icon color="black" @click="selections[id] = null;">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </div>
         <v-select
             v-model="selections[id]"
             :items="ans"
@@ -72,14 +79,29 @@ export default {
       return this.surveyInfo.startDate > Date.now();
     },
     async submit() {
-      let payload = {}, alertMsg = [];
+      let payload = {}, alertMsg = [], used = {};
       for (let obj of this.questions) {
         payload[obj.id] = this.selections[obj.id] || [];
         if (!Array.isArray(payload[obj.id])) payload[obj.id] = [payload[obj.id]];
-        if (payload[obj.id].length > 0) alertMsg.push(`${obj.quest} : ${payload[obj.id].join(", ")}`);
-        else {
+        if (payload[obj.id].length > 0) {
+          if (obj.unique) {
+            for (let s of payload[obj.id]) {
+              let id = obj.ans.filter(a => a.value === s);
+              if (id.length !== 1) {
+                alert("오류가 발생했습니다.");
+                return;
+              }
+              id = id.shift().id;
+              if (used[id] !== undefined) {
+                alert(`"${obj.quest}"에 대한 답변 "${s}"이(가) 중복되었습니다.`);
+                return;
+              } else used[id] = true;
+            }
+          }
+          alertMsg.push(`${obj.quest} : ${payload[obj.id].join(", ")}`);
+        } else {
           if (obj.required) {
-            alert(`"${obj.quest}"에 대한 답을 선택하세요.`);
+            alert(`"${obj.quest}"에 대한 답변을 선택하세요.`);
             return;
           }
           alertMsg.push(`${obj.quest} : (없음)`);
