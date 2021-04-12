@@ -6,8 +6,11 @@
       {{ cantSubmitted }}
     </div>
     <div v-else-if="status === 0">
-      <p v-if="questions.filter(({unique}) => unique).length > 0">
-        {{ questions.filter(({unique}) => unique).map(({quest}) => `"${quest}"`).join(", ") }}에 대한 답변은 서로 달라야 합니다.</p>
+      <div v-if="questions.filter(({unique}) => unique).length > 0">
+        <p>{{ questions.filter(({unique}) => unique).map(({quest}) => `"${quest}"`).join(", ") }}에 대한 답변은 서로 달라야 합니다.</p>
+        <hr style="margin: 10px 0;">
+      </div>
+
       <div
           v-for="({quest, ans, multiple, id}) in questions"
           :key="id"
