@@ -96,7 +96,7 @@ export default {
               }
               id = id.shift().id;
               if (used[id] !== undefined) {
-                alert(`"${obj.quest}"에 대한 답변 "${s}"이(가) 중복되었습니다.`);
+                alert(`"${obj.quest}"에 대한 답변 "${id}"이(가) 중복되었습니다.`);
                 return;
               } else used[id] = true;
             }
