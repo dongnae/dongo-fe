@@ -6,8 +6,14 @@
       {{ cantSubmitted }}
     </div>
     <div v-else-if="status === 0">
+      <div v-if="surveyInfo.desc !== null">
+        <p>{{ surveyInfo.desc }}</p>
+        <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
+      </div>
+
       <div v-if="questions.filter(({unique}) => unique).length > 0">
-        <p>{{ questions.filter(({unique}) => unique).map(({quest}) => `"${quest}"`).join(", ") }}에 대한 답변은 서로 달라야 합니다.</p>
+        <p>{{ questions.filter(({unique}) => unique).map(({quest}) => `"${quest}"`).join(", ") }}에 대한 답변은 서로 달라야
+          합니다.</p>
         <hr style="margin: 10px 0; border-top: 1px rgba(0, 0, 0, 0.7);">
       </div>
 
