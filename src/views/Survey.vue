@@ -6,7 +6,7 @@
       {{ cantSubmitted }}
     </div>
     <div v-else-if="status === 0">
-      <div v-if="surveyInfo.desc !== null">
+      <div v-if="surveyInfo.desc !== undefined">
         <p>{{ surveyInfo.desc }}</p>
         <hr style="border-top: rgba(0, 0, 0, .7) 1px; margin: 15px 0; height: 1px;">
       </div>
