@@ -29,6 +29,8 @@ export default {
 }
 
 .body-content-header {
+  padding-top: 100px;
+
   font-weight: 600;
   font-size: 35px;
   text-align: left;
