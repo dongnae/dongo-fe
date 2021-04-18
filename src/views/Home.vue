@@ -22,15 +22,12 @@ export default {
 
 .body-content {
   display: flex;
-  justify-content: center;
   width: 40%;
   flex-direction: column;
   align-items: center;
 }
 
 .body-content-header {
-  padding-top: 100px;
-
   font-weight: 600;
   font-size: 35px;
   text-align: left;
