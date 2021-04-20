@@ -39,7 +39,6 @@ export default {
 
   .body-content {
     display: flex;
-    justify-content: center;
     width: 80%;
     max-width: 300px;
     /* min-width: 200px; */
